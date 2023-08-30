@@ -114,9 +114,20 @@ public partial class StarShipMovement : CharacterBody2D
             Godot.Vector2 comparison = tempVelocity - Velocity;
             compare = comparison;
 
+            if (tempVelocity != Velocity)
+                GD.Print(tempVelocity);
+
             tempVelocity = new Godot.Vector2(
-                Math.Clamp(tempVelocity.X, -distanceVectorMaxSpeed().X, distanceVectorMaxSpeed().X),
-                Math.Clamp(tempVelocity.Y, -distanceVectorMaxSpeed().Y, distanceVectorMaxSpeed().Y)
+                Math.Clamp(
+                    tempVelocity.X,
+                    -distanceVectorMaxSpeed(tempVelocity).X,
+                    distanceVectorMaxSpeed(tempVelocity).X
+                ),
+                Math.Clamp(
+                    tempVelocity.Y,
+                    -distanceVectorMaxSpeed(tempVelocity).Y,
+                    distanceVectorMaxSpeed(tempVelocity).Y
+                )
             );
         }
 
@@ -139,17 +150,16 @@ public partial class StarShipMovement : CharacterBody2D
         SetShipVelocity(delta);
     }
 
-    private Godot.Vector2 distanceVectorMaxSpeed()
+    private Godot.Vector2 distanceVectorMaxSpeed(Godot.Vector2 tempVelocity)
     {
-        float rY = Math.Abs(Velocity.Y);
-        float rX = Math.Abs(Velocity.X);
+        float rY = Math.Abs(tempVelocity.Y);
+        float rX = Math.Abs(tempVelocity.X);
 
         float cX;
         float cY;
-        GD.Print("realDistanceVector: ");
-        GD.Print("velocity: " + Velocity);
-
-        GD.Print("rX: " + rX + " rY: " + rY);
+        // GD.Print("realDistanceVector: ");
+        // GD.Print("velocity: " + Velocity);
+        // GD.Print("rX: " + rX + " rY: " + rY);
         if (rX <= rY)
         {
             float m = rX == 0 ? 0 : rY / rX;
@@ -157,10 +167,10 @@ public partial class StarShipMovement : CharacterBody2D
             float denominatorPower = m > 0 || m < 0 ? (2 * (float)Math.Pow(m, 2)) : 1;
 
             cX = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
-            GD.Print("calc: " + cX);
+            //GD.Print("calc: " + cX);
             cY = cX * m;
-            GD.Print("m: " + m);
-            GD.Print("cX: " + cX + " cY: " + cY);
+            //GD.Print("m: " + m);
+            //GD.Print("cX: " + cX + " cY: " + cY);
         }
         else
         {
@@ -169,10 +179,10 @@ public partial class StarShipMovement : CharacterBody2D
             float denominatorPower = m > 0 || m < 0 ? (2 * (float)Math.Pow(m, 2)) : 1;
 
             cY = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
-            GD.Print("calc: " + cY);
+            //GD.Print("calc: " + cY);
             cX = cY * m;
-            GD.Print("m: " + m);
-            GD.Print("cX: " + cX + " cY: " + cY);
+            //GD.Print("m: " + m);
+            //GD.Print("cX: " + cX + " cY: " + cY);
         }
 
         return new Godot.Vector2(cX, cY);
