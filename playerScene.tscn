@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2p54xjrpd4vb"]
+[gd_scene load_steps=6 format=3 uid="uid://c2p54xjrpd4vb"]
 
 [ext_resource type="Script" path="res://Scripts/CameraScript.cs" id="1_ubqqt"]
 [ext_resource type="Texture2D" uid="uid://74igu178ewhc" path="res://images/background/npr_background.jpg" id="2_qvxuy"]
 [ext_resource type="Script" path="res://Scripts/StarShipMovement.cs" id="3_no3to"]
 [ext_resource type="Texture2D" uid="uid://debhvco5cgxe7" path="res://images/ship/Ship_5.png" id="3_o466a"]
+[ext_resource type="Script" path="res://Scripts/HelperScripts/richLabelVelocityHelper.cs" id="5_bmq43"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_ubqqt")
@@ -17,7 +18,7 @@ script = ExtResource("3_no3to")
 
 [node name="PlayerCollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerCharacterBody2D"]
 position = Vector2(0.05095, 0.3)
-rotation = -0.785398
+rotation = -2.96706
 scale = Vector2(1.61975, 1.61809)
 polygon = PackedVector2Array(1.2371, -9.7723, 4.29021, 1.05062, 8.61188, 1.05062, 9.8968, -1.22154, 9.84664, 4.75868, 4.29021, 6.61272, 4.32985, 9.7723, 1.85565, 7.93999, 1.82069, 5.37669, -1.8836, 5.37669, -1.85565, 7.93999, -4.32985, 9.7723, -4.9705, 6.61272, -9.90955, 4.75868, -9.90955, -0.803414, -8.67479, 1.05062, -4.32985, 1.22154, -1.2371, -9.7723)
 
@@ -27,3 +28,16 @@ scale = Vector2(0.617379, 0.618013)
 texture = ExtResource("3_o466a")
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacterBody2D"]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PlayerCharacterBody2D"]
+custom_minimum_size = Vector2(200, 0)
+offset_left = 5.0
+offset_top = -93.0
+offset_right = 205.0
+offset_bottom = -53.0
+scale = Vector2(1.25276, 1)
+theme_override_font_sizes/normal_font_size = 8
+text = "ASDASDFAS"
+fit_content = true
+scroll_active = false
+script = ExtResource("5_bmq43")

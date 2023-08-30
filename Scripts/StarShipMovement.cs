@@ -9,6 +9,7 @@ using static HelperScripts;
 public partial class StarShipMovement : CharacterBody2D
 {
     private HelperScripts velocityPrint = new HelperScripts();
+    public Godot.Vector2 compare = new Godot.Vector2(0, 0);
 
     private float stoppingPoint = 6f;
 
@@ -25,7 +26,7 @@ public partial class StarShipMovement : CharacterBody2D
 
     private float _rotationDirection;
 
-    CollisionPolygon2D _childCollisionPolygon;
+    public CollisionPolygon2D _childCollisionPolygon;
 
     public override void _Ready()
     {
@@ -34,10 +35,10 @@ public partial class StarShipMovement : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        GetInput();
+        GetInput(delta);
         RotateShip(delta);
         MoveAndSlide();
-        //velocityPrint.printVelocityChange(Velocity);
+        velocityPrint.printVelocityChange(Velocity);
     }
 
     public void RotateShip(double delta)
@@ -76,7 +77,7 @@ public partial class StarShipMovement : CharacterBody2D
         return -1;
     }
 
-    private Godot.Vector2 directionValue()
+    public Godot.Vector2 directionValue()
     {
         return (
             new Godot.Vector2(
@@ -93,101 +94,87 @@ public partial class StarShipMovement : CharacterBody2D
         );
     }
 
-    private void SetShipVelocity()
+    private void SetShipVelocity(double delta)
     {
+        Godot.Vector2 tempVelocity = Velocity;
+
         if (Input.IsKeyPressed(Key.W))
         {
-            momentum += 0.5f;
-
-            GD.Print(directionValue() * ShipAcceleration);
-            Velocity += directionValue() * ShipAcceleration;
+            float accelAndDelta = ShipAcceleration * (float)delta * 100;
+            tempVelocity += directionValue() * ShipAcceleration;
+            //GD.Print(Math.Sqrt(Math.Pow(tempVelocity.X, 2) + Math.Pow(tempVelocity.Y, 2)));
         }
         else if (Input.IsKeyPressed(Key.S))
         {
-            momentum -= 0.5f;
-            Velocity -= directionValue() * ShipAcceleration;
+            tempVelocity -= directionValue() * ShipAcceleration;
         }
 
-        if (Math.Sqrt(Math.Pow(Velocity.X, 2) + Math.Pow(Velocity.Y, 2)) >= 80)
-            ;
-        Velocity = new Godot.Vector2(
-            Math.Clamp((float)Velocity.X, -(float)MaxShipVelocity, (float)MaxShipVelocity),
-            Math.Clamp((float)Velocity.Y, -(float)MaxShipVelocity, (float)MaxShipVelocity)
-        );
+        if (Math.Sqrt(Math.Pow(tempVelocity.X, 2) + Math.Pow(tempVelocity.Y, 2)) > 80)
+        {
+            Godot.Vector2 comparison = tempVelocity - Velocity;
+            compare = comparison;
+
+            tempVelocity = new Godot.Vector2(
+                Math.Clamp(tempVelocity.X, -distanceVectorMaxSpeed().X, distanceVectorMaxSpeed().X),
+                Math.Clamp(tempVelocity.Y, -distanceVectorMaxSpeed().Y, distanceVectorMaxSpeed().Y)
+            );
+        }
 
         if (
             (
-                Velocity.X < stoppingPoint
-                && Velocity.X > -stoppingPoint
-                && Velocity.Y < stoppingPoint
-                && Velocity.Y > -stoppingPoint
+                tempVelocity.X < stoppingPoint
+                && tempVelocity.X > -stoppingPoint
+                && tempVelocity.Y < stoppingPoint
+                && tempVelocity.Y > -stoppingPoint
             ) && !(Input.IsKeyPressed(Key.W) || Input.IsKeyPressed(Key.S))
         )
-            Velocity = new Godot.Vector2(0, 0);
+            tempVelocity = new Godot.Vector2(0, 0);
 
-        //speedLimiterToMax();
+        Velocity = tempVelocity;
     }
 
-    public void GetInput()
+    public void GetInput(double delta)
     {
         GetShipRotation();
-        SetShipVelocity();
+        SetShipVelocity(delta);
     }
 
-    private void speedLimiterToMax()
+    private Godot.Vector2 distanceVectorMaxSpeed()
     {
-        /** y = mx
-        // D = Math.Sqrt(Math.Pow(x,2) + Math.Pow(y,2))
-        // rX = real X
-        rY = real Y
-        cX = clamped X
-        cY = clamped Y
-        cD = clamped Distance (80)
+        float rY = Math.Abs(Velocity.Y);
+        float rX = Math.Abs(Velocity.X);
 
-        m = rY/rX
+        float cX;
+        float cY;
+        GD.Print("realDistanceVector: ");
+        GD.Print("velocity: " + Velocity);
 
-        cD = Math.Sqrt(Math.Pow(cX,2) + Math.Pow(cX*m,2))
-
-        cX = Math.Sqrt(Math.Pow(cD,2)/(2*Math.Pow(m,2)))
-
-        cY = cXm
-
-
-        **/
-
-        float realDistanceVector = (float)
-            Math.Sqrt(Math.Pow(Velocity.X, 2) + Math.Pow(Velocity.Y, 2));
-
-        if (realDistanceVector > MaxShipVelocity)
+        GD.Print("rX: " + rX + " rY: " + rY);
+        if (rX <= rY)
         {
-            float rY = Velocity.Y;
-            float rX = Velocity.X;
-            GD.Print("realDistanceVector: " + realDistanceVector);
-            GD.Print("velocity: " + Velocity);
-
-            GD.Print("rX: " + rX + " rY: " + rY);
-
             float m = rX == 0 ? 0 : rY / rX;
 
             float denominatorPower = m > 0 || m < 0 ? (2 * (float)Math.Pow(m, 2)) : 1;
 
-            float cX = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
-
-            float cY = cX * m;
+            cX = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
+            GD.Print("calc: " + cX);
+            cY = cX * m;
             GD.Print("m: " + m);
             GD.Print("cX: " + cX + " cY: " + cY);
-
-            if (rY < 0)
-            {
-                cY = cY * -1;
-            }
-
-            if (rX < 0)
-            {
-                cX = cX * -1;
-            }
-
-            Velocity = new Godot.Vector2(cX, cY);
         }
+        else
+        {
+            float m = rY == 0 ? 0 : rX / rY;
+
+            float denominatorPower = m > 0 || m < 0 ? (2 * (float)Math.Pow(m, 2)) : 1;
+
+            cY = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
+            GD.Print("calc: " + cY);
+            cX = cY * m;
+            GD.Print("m: " + m);
+            GD.Print("cX: " + cX + " cY: " + cY);
+        }
+
+        return new Godot.Vector2(cX, cY);
     }
 }
