@@ -8,22 +8,16 @@ using static HelperScripts;
 
 public partial class StarShipMovement : CharacterBody2D
 {
-    private HelperScripts velocityPrint = new HelperScripts();
-    public Godot.Vector2 compare = new Godot.Vector2(0, 0);
-
+    //private HelperScripts velocityPrint = new HelperScripts();
     private float stoppingPoint = 6f;
 
-    public float MaxShipVelocity { get; set; } = 80f;
+    public float MaxShipVelocity { get; set; } = 200f;
 
     [Export]
-    public float ShipAcceleration { get; set; } = 2f;
+    public float ShipAcceleration { get; set; } = 100f;
 
     [Export]
     public float RotationSpeed { get; set; } = 5f;
-
-    [Export]
-    private float momentum = 0f;
-
     private float _rotationDirection;
 
     public CollisionPolygon2D _childCollisionPolygon;
@@ -38,7 +32,13 @@ public partial class StarShipMovement : CharacterBody2D
         GetInput(delta);
         RotateShip(delta);
         MoveAndSlide();
-        velocityPrint.printVelocityChange(Velocity);
+        //velocityPrint.printVelocityChange(Velocity);
+    }
+
+    public void GetInput(double delta)
+    {
+        GetShipRotation();
+        SetShipVelocity(delta);
     }
 
     public void RotateShip(double delta)
@@ -98,25 +98,19 @@ public partial class StarShipMovement : CharacterBody2D
     {
         Godot.Vector2 tempVelocity = Velocity;
 
+        float deltaAcceleration = ShipAcceleration * (float)delta;
+
         if (Input.IsKeyPressed(Key.W))
         {
-            float accelAndDelta = ShipAcceleration * (float)delta * 100;
-            tempVelocity += directionValue() * ShipAcceleration;
-            //GD.Print(Math.Sqrt(Math.Pow(tempVelocity.X, 2) + Math.Pow(tempVelocity.Y, 2)));
+            tempVelocity += directionValue() * deltaAcceleration;
         }
         else if (Input.IsKeyPressed(Key.S))
         {
-            tempVelocity -= directionValue() * ShipAcceleration;
+            tempVelocity -= directionValue() * deltaAcceleration;
         }
 
         if (Math.Sqrt(Math.Pow(tempVelocity.X, 2) + Math.Pow(tempVelocity.Y, 2)) > 80)
         {
-            Godot.Vector2 comparison = tempVelocity - Velocity;
-            compare = comparison;
-
-            if (tempVelocity != Velocity)
-                GD.Print(tempVelocity);
-
             tempVelocity = new Godot.Vector2(
                 Math.Clamp(
                     tempVelocity.X,
@@ -144,12 +138,6 @@ public partial class StarShipMovement : CharacterBody2D
         Velocity = tempVelocity;
     }
 
-    public void GetInput(double delta)
-    {
-        GetShipRotation();
-        SetShipVelocity(delta);
-    }
-
     private Godot.Vector2 distanceVectorMaxSpeed(Godot.Vector2 tempVelocity)
     {
         float rY = Math.Abs(tempVelocity.Y);
@@ -157,9 +145,7 @@ public partial class StarShipMovement : CharacterBody2D
 
         float cX;
         float cY;
-        // GD.Print("realDistanceVector: ");
-        // GD.Print("velocity: " + Velocity);
-        // GD.Print("rX: " + rX + " rY: " + rY);
+
         if (rX <= rY)
         {
             float m = rX == 0 ? 0 : rY / rX;
@@ -167,10 +153,8 @@ public partial class StarShipMovement : CharacterBody2D
             float denominatorPower = m > 0 || m < 0 ? (2 * (float)Math.Pow(m, 2)) : 1;
 
             cX = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
-            //GD.Print("calc: " + cX);
+
             cY = cX * m;
-            //GD.Print("m: " + m);
-            //GD.Print("cX: " + cX + " cY: " + cY);
         }
         else
         {
@@ -179,10 +163,8 @@ public partial class StarShipMovement : CharacterBody2D
             float denominatorPower = m > 0 || m < 0 ? (2 * (float)Math.Pow(m, 2)) : 1;
 
             cY = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
-            //GD.Print("calc: " + cY);
+
             cX = cY * m;
-            //GD.Print("m: " + m);
-            //GD.Print("cX: " + cX + " cY: " + cY);
         }
 
         return new Godot.Vector2(cX, cY);

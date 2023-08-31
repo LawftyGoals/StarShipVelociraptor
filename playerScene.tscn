@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c2p54xjrpd4vb"]
+[gd_scene load_steps=5 format=3 uid="uid://c2p54xjrpd4vb"]
 
 [ext_resource type="Script" path="res://Scripts/CameraScript.cs" id="1_ubqqt"]
 [ext_resource type="Texture2D" uid="uid://74igu178ewhc" path="res://images/background/npr_background.jpg" id="2_qvxuy"]
 [ext_resource type="Script" path="res://Scripts/StarShipMovement.cs" id="3_no3to"]
 [ext_resource type="Texture2D" uid="uid://debhvco5cgxe7" path="res://images/ship/Ship_5.png" id="3_o466a"]
-[ext_resource type="Script" path="res://Scripts/HelperScripts/richLabelVelocityHelper.cs" id="5_bmq43"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_ubqqt")
@@ -28,16 +27,3 @@ scale = Vector2(0.617379, 0.618013)
 texture = ExtResource("3_o466a")
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacterBody2D"]
-
-[node name="RichTextLabel" type="RichTextLabel" parent="PlayerCharacterBody2D"]
-custom_minimum_size = Vector2(200, 0)
-offset_left = 5.0
-offset_top = -93.0
-offset_right = 205.0
-offset_bottom = -53.0
-scale = Vector2(1.25276, 1)
-theme_override_font_sizes/normal_font_size = 8
-text = "ASDASDFAS"
-fit_content = true
-scroll_active = false
-script = ExtResource("5_bmq43")
