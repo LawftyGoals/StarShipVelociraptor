@@ -109,6 +109,11 @@ public partial class StarShipMovement : CharacterBody2D
             tempVelocity -= directionValue() * deltaAcceleration;
         }
 
+        if (Input.IsKeyPressed(Key.Q))
+        {
+            tempVelocity -= directionValue() * deltaAcceleration;
+        }
+
         if (Math.Sqrt(Math.Pow(tempVelocity.X, 2) + Math.Pow(tempVelocity.Y, 2)) > 80)
         {
             tempVelocity = new Godot.Vector2(
