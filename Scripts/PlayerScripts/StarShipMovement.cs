@@ -1,9 +1,5 @@
 using Godot;
 using System;
-using System.ComponentModel;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.AccessControl;
 using static HelperScripts;
 
 public partial class StarShipMovement : CharacterBody2D
@@ -11,7 +7,7 @@ public partial class StarShipMovement : CharacterBody2D
     //private HelperScripts velocityPrint = new HelperScripts();
     private float stoppingPoint = 6f;
 
-    public float MaxShipVelocity { get; set; } = 200f;
+    public float MaxShipVelocity { get; set; } = 80f;
 
     [Export]
     public float ShipAcceleration { get; set; } = 100f;
@@ -32,7 +28,6 @@ public partial class StarShipMovement : CharacterBody2D
         GetInput(delta);
         RotateShip(delta);
         MoveAndSlide();
-        //velocityPrint.printVelocityChange(Velocity);
     }
 
     public void GetInput(double delta)
@@ -62,11 +57,6 @@ public partial class StarShipMovement : CharacterBody2D
         }
     }
 
-    private float positiveChildGlobalRotation()
-    {
-        return (float)Math.Sqrt(Math.Pow(_childCollisionPolygon.GlobalRotation, 2f));
-    }
-
     private int positiveOrNegative()
     {
         if (_childCollisionPolygon.GlobalRotation >= 0 && positiveChildGlobalRotation() >= 0)
@@ -77,20 +67,28 @@ public partial class StarShipMovement : CharacterBody2D
         return -1;
     }
 
+    private float positiveChildGlobalRotation()
+    {
+        return (float)Math.Round(Math.Abs(_childCollisionPolygon.GlobalRotation), 4);
+    }
+
     public Godot.Vector2 directionValue()
     {
         return (
             new Godot.Vector2(
                 positiveOrNegative()
-                    * (
-                        1
-                        - (
-                            (float)Math.Sqrt(Math.Pow(positiveChildGlobalRotation() - 1.5708f, 2f))
-                            / 1.5708f
-                        )
-                    ),
+                    * (1 - ((float)Math.Abs(positiveChildGlobalRotation() - 1.5708f) / 1.5708f)),
                 -(1.5708f - positiveChildGlobalRotation()) / 1.5708f
             )
+        );
+    }
+
+    public Godot.Vector2 directionValueStrafe()
+    {
+        return new Godot.Vector2(
+            -(1.5708f - positiveChildGlobalRotation()) / 1.5708f,
+            -positiveOrNegative()
+                * (1 - ((float)Math.Abs(positiveChildGlobalRotation() - 1.5708f) / 1.5708f))
         );
     }
 
@@ -104,17 +102,23 @@ public partial class StarShipMovement : CharacterBody2D
         {
             tempVelocity += directionValue() * deltaAcceleration;
         }
-        else if (Input.IsKeyPressed(Key.S))
+
+        if (Input.IsKeyPressed(Key.S))
         {
-            tempVelocity -= directionValue() * deltaAcceleration;
+            tempVelocity += -directionValue() * deltaAcceleration;
         }
 
         if (Input.IsKeyPressed(Key.Q))
         {
-            tempVelocity -= directionValue() * deltaAcceleration;
+            tempVelocity += directionValueStrafe() * deltaAcceleration;
         }
 
-        if (Math.Sqrt(Math.Pow(tempVelocity.X, 2) + Math.Pow(tempVelocity.Y, 2)) > 80)
+        if (Input.IsKeyPressed(Key.E))
+        {
+            tempVelocity -= directionValueStrafe() * deltaAcceleration;
+        }
+
+        if (Math.Sqrt(Math.Pow(tempVelocity.X, 2) + Math.Pow(tempVelocity.Y, 2)) > MaxShipVelocity)
         {
             tempVelocity = new Godot.Vector2(
                 Math.Clamp(
@@ -132,11 +136,15 @@ public partial class StarShipMovement : CharacterBody2D
 
         if (
             (
-                tempVelocity.X < stoppingPoint
-                && tempVelocity.X > -stoppingPoint
-                && tempVelocity.Y < stoppingPoint
-                && tempVelocity.Y > -stoppingPoint
-            ) && !(Input.IsKeyPressed(Key.W) || Input.IsKeyPressed(Key.S))
+                tempVelocity < new Godot.Vector2(stoppingPoint, stoppingPoint)
+                && tempVelocity > -new Godot.Vector2(stoppingPoint, stoppingPoint)
+            )
+            && !(
+                Input.IsKeyPressed(Key.W)
+                || Input.IsKeyPressed(Key.S)
+                || Input.IsKeyPressed(Key.Q)
+                || Input.IsKeyPressed(Key.E)
+            )
         )
             tempVelocity = new Godot.Vector2(0, 0);
 

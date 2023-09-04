@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://y4rcwai42k8n"]
+[gd_scene load_steps=6 format=3 uid="uid://y4rcwai42k8n"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/StarShipMovement.cs" id="1_p8qep"]
 [ext_resource type="Texture2D" uid="uid://74igu178ewhc" path="res://images/background/npr_background.jpg" id="1_u7a1q"]
 [ext_resource type="Texture2D" uid="uid://debhvco5cgxe7" path="res://images/ship/Ship_5.png" id="2_ja5u7"]
+[ext_resource type="PackedScene" uid="uid://dsal44b1euo2d" path="res://Scenes/Environments/StellarObjects/StellarObject.tscn" id="2_ul4yp"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/CameraScript.cs" id="3_ldpon"]
 
 [node name="Node2D" type="Node2D"]
@@ -10,12 +11,13 @@
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_u7a1q")
 
+[node name="Node2D" parent="." instance=ExtResource("2_ul4yp")]
+
 [node name="PlayerCharacterBody2D" type="CharacterBody2D" parent="."]
 script = ExtResource("1_p8qep")
 
 [node name="PlayerCollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerCharacterBody2D"]
-position = Vector2(0.05095, 0.3)
-rotation = -2.96706
+position = Vector2(2, -2)
 polygon = PackedVector2Array(1.2371, -9.7723, 4.29021, 1.05062, 8.61188, 1.05062, 9.8968, -1.22154, 9.84664, 4.75868, 4.29021, 6.61272, 4.32985, 9.7723, 1.85565, 7.93999, 1.82069, 5.37669, -1.8836, 5.37669, -1.85565, 7.93999, -4.32985, 9.7723, -4.9705, 6.61272, -9.90955, 4.75868, -9.90955, -0.803414, -8.67479, 1.05062, -4.32985, 1.22154, -1.2371, -9.7723)
 
 [node name="PlayerSprite2D" type="Sprite2D" parent="PlayerCharacterBody2D/PlayerCollisionPolygon2D"]
