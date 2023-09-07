@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://owk1157w88m7"
-path="res://.godot/imported/firstbingplanet.png-0f2654bf39accb65e048e963a96cb3f8.ctex"
+path="res://.godot/imported/firstbingplanet.png-91424e9d92ab0d651df9441a2ac5f568.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/Planets/firstbingplanet.png"
-dest_files=["res://.godot/imported/firstbingplanet.png-0f2654bf39accb65e048e963a96cb3f8.ctex"]
+source_file="res://images/planets/firstbingplanet.png"
+dest_files=["res://.godot/imported/firstbingplanet.png-91424e9d92ab0d651df9441a2ac5f568.ctex"]
 
 [params]
 

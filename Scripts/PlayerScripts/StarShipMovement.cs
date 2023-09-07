@@ -36,10 +36,8 @@ public partial class StarShipMovement : CharacterBody2D
         SetShipVelocity(delta);
     }
 
-    public void RotateShip(double delta)
-    {
+    public void RotateShip(double delta) =>
         _childCollisionPolygon.GlobalRotation += _rotationDirection * RotationSpeed * (float)delta;
-    }
 
     private void GetShipRotation()
     {
@@ -67,30 +65,22 @@ public partial class StarShipMovement : CharacterBody2D
         return -1;
     }
 
-    private float positiveChildGlobalRotation()
-    {
-        return (float)Math.Round(Math.Abs(_childCollisionPolygon.GlobalRotation), 4);
-    }
+    private float positiveChildGlobalRotation() =>
+        (float)Math.Round(Math.Abs(_childCollisionPolygon.GlobalRotation), 4);
 
-    public Godot.Vector2 directionValue()
-    {
-        return (
-            new Godot.Vector2(
-                positiveOrNegative()
-                    * (1 - ((float)Math.Abs(positiveChildGlobalRotation() - 1.5708f) / 1.5708f)),
-                -(1.5708f - positiveChildGlobalRotation()) / 1.5708f
-            )
+    public Godot.Vector2 directionValue() =>
+        new Godot.Vector2(
+            positiveOrNegative()
+                * (1 - ((float)Math.Abs(positiveChildGlobalRotation() - 1.5708f) / 1.5708f)),
+            -(1.5708f - positiveChildGlobalRotation()) / 1.5708f
         );
-    }
 
-    public Godot.Vector2 directionValueStrafe()
-    {
-        return new Godot.Vector2(
+    public Godot.Vector2 directionValueStrafe() =>
+        new Godot.Vector2(
             -(1.5708f - positiveChildGlobalRotation()) / 1.5708f,
             -positiveOrNegative()
                 * (1 - ((float)Math.Abs(positiveChildGlobalRotation() - 1.5708f) / 1.5708f))
         );
-    }
 
     private void SetShipVelocity(double delta)
     {

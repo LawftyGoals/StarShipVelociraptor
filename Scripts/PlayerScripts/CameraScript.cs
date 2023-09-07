@@ -33,9 +33,7 @@ public partial class CameraScript : Camera2D
     private void zoomIn()
     {
         if (setZoomLevel <= maxZoomLevel)
-        {
             setZoomLevel += zoomSkip;
-        }
     }
 
     private void zoomOut()
