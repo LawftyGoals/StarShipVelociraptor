@@ -9,7 +9,7 @@ public partial class StellarObject : Area2D
     [Export]
     protected float RotationMultiplyer { get; set; } = 1000;
     public string StellarObjectName { get; set; }
-    public Godot.Vector2 StellarObjectPosition { get; set; }
+    public Godot.Vector2 StellarObjectPosition { get; set; } = new Godot.Vector2(1000, 0);
     protected int StellarObjectSize { get; set; } = 714;
     public Boolean StellarObjectStatic { get; set; } = true;
     public int StellarObjectYear { get; set; } = 365;
@@ -17,7 +17,7 @@ public partial class StellarObject : Area2D
     public int RotationDirection { get; set; } = 1;
 
     public StellarObject StellarObjectParent { get; set; } = null;
-    public float DistanceToParent { get; set; }
+    public float DistanceToParent { get; set; } = 1000f;
 
     protected Sprite2D _objectsSprite;
     protected CollisionShape2D _objectsCollision;

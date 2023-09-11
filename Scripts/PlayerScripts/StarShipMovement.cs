@@ -1,4 +1,5 @@
 using Godot;
+using Microsoft.Win32.SafeHandles;
 using System;
 using static HelperScripts;
 
@@ -95,7 +96,7 @@ public partial class StarShipMovement : CharacterBody2D
 
         if (Input.IsKeyPressed(Key.S))
         {
-            tempVelocity += -directionValue() * deltaAcceleration;
+            tempVelocity -= directionValue() * deltaAcceleration;
         }
 
         if (Input.IsKeyPressed(Key.Q))
@@ -126,8 +127,10 @@ public partial class StarShipMovement : CharacterBody2D
 
         if (
             (
-                tempVelocity < new Godot.Vector2(stoppingPoint, stoppingPoint)
-                && tempVelocity > -new Godot.Vector2(stoppingPoint, stoppingPoint)
+                tempVelocity.X > -stoppingPoint
+                && tempVelocity.X < stoppingPoint
+                && tempVelocity.Y > -stoppingPoint
+                && tempVelocity.Y < stoppingPoint
             )
             && !(
                 Input.IsKeyPressed(Key.W)
@@ -149,11 +152,11 @@ public partial class StarShipMovement : CharacterBody2D
         float cX;
         float cY;
 
-        if (rX <= rY)
+        if (rX >= rY)
         {
             float m = rX == 0 ? 0 : rY / rX;
 
-            float denominatorPower = m > 0 || m < 0 ? (2 * (float)Math.Pow(m, 2)) : 1;
+            float denominatorPower = (float)Math.Pow(m, 2) + 1;
 
             cX = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
 
@@ -163,9 +166,9 @@ public partial class StarShipMovement : CharacterBody2D
         {
             float m = rY == 0 ? 0 : rX / rY;
 
-            float denominatorPower = m > 0 || m < 0 ? (2 * (float)Math.Pow(m, 2)) : 1;
+            float denominatorPower = (float)Math.Pow(m, 2) + 1;
 
-            cY = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower);
+            cY = (float)Math.Sqrt(Math.Pow(MaxShipVelocity, 2) / denominatorPower + 1);
 
             cX = cY * m;
         }
