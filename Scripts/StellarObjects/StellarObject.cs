@@ -3,21 +3,29 @@ using System;
 using System.Diagnostics.Tracing;
 using System.Dynamic;
 using ResourceHelpers;
+using System.ComponentModel;
 
 public partial class StellarObject : Area2D
 {
     [Export]
+    protected Godot.Vector2 StellarParentPosition { get; set; } = new Godot.Vector2(0, 0);
+    protected StellarObject StellarParent;
     protected float RotationMultiplyer { get; set; } = 1000;
     public string StellarObjectName { get; set; }
     public Godot.Vector2 StellarObjectPosition { get; set; } = new Godot.Vector2(1000, 0);
-    protected int StellarObjectSize { get; set; } = 714;
+    protected int StellarObjectSize { get; set; } = 1000;
     public Boolean StellarObjectStatic { get; set; } = true;
     public int StellarObjectYear { get; set; } = 365;
     public int StellarObjectDay { get; set; } = 24;
     public int RotationDirection { get; set; } = 1;
 
     public StellarObject StellarObjectParent { get; set; } = null;
-    public float DistanceToParent { get; set; } = 1000f;
+    private float _distanceToParent = 1000f;
+    public float DistanceToParent
+    {
+        get => _distanceToParent;
+        set { _distanceToParent = value + StellarParent.StellarObjectSize; }
+    }
 
     protected Sprite2D _objectsSprite;
     protected CollisionShape2D _objectsCollision;

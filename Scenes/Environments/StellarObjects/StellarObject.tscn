@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsal44b1euo2d"]
 
-[ext_resource type="Script" path="res://Scripts/StellarObjects/StellarObject.cs" id="1_qfhi5"]
+[ext_resource type="Script" path="res://Scripts/StellarObjects/CircularOrbitStellarObject.cs" id="1_xneom"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sic4p"]
 
-[node name="StellarObjectArea2D" type="Area2D"]
-script = ExtResource("1_qfhi5")
+[node name="OrbitStellarObjectArea2D" type="Area2D"]
+script = ExtResource("1_xneom")
 
 [node name="StellarObjectSprite2D" type="Sprite2D" parent="."]
 
