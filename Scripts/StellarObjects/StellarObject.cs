@@ -7,9 +7,8 @@ using System.ComponentModel;
 
 public partial class StellarObject : Area2D
 {
+    //CURRENT
     [Export]
-    protected Godot.Vector2 StellarParentPosition { get; set; } = new Godot.Vector2(0, 0);
-    protected StellarObject StellarParent;
     protected float RotationMultiplyer { get; set; } = 1000;
     public string StellarObjectName { get; set; }
     public Godot.Vector2 StellarObjectPosition { get; set; } = new Godot.Vector2(1000, 0);
@@ -19,12 +18,14 @@ public partial class StellarObject : Area2D
     public int StellarObjectDay { get; set; } = 24;
     public int RotationDirection { get; set; } = 1;
 
+    //PARENT
+    protected Godot.Vector2 StellarParentPosition { get; set; } = new Godot.Vector2(0, 0);
     public StellarObject StellarObjectParent { get; set; } = null;
     private float _distanceToParent = 1000f;
     public float DistanceToParent
     {
         get => _distanceToParent;
-        set { _distanceToParent = value + StellarParent.StellarObjectSize; }
+        set { _distanceToParent = value + StellarObjectParent.StellarObjectSize; }
     }
 
     protected Sprite2D _objectsSprite;
@@ -53,7 +54,6 @@ public partial class StellarObject : Area2D
         StellarObjectYear = year;
         StellarObjectDay = day;
         RotationDirection = direction;
-
         StellarObjectParent = parent;
         DistanceToParent = parentDistance;
     }
@@ -66,12 +66,21 @@ public partial class StellarObject : Area2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _objectsSprite = GetNode<Sprite2D>("StellarObjectSprite2D");
-        _objectsCollision = GetNode<CollisionShape2D>("StellarObjectCollisionShape2D");
-
+        //_objectsSprite = GetNode<Sprite2D>("StellarObjectSprite2D");
+        //_objectsCollision = GetNode<CollisionShape2D>("StellarObjectCollisionShape2D");
+        generateSpriteAndCollision();
         initiateSprite();
         initiateCollision();
         setPosition();
+    }
+
+    protected void generateSpriteAndCollision()
+    {
+        _objectsSprite = new Sprite2D { Name = "StellarObjectSprite2D" };
+        AddChild(_objectsSprite);
+
+        _objectsCollision = new CollisionShape2D { Name = "StellarObjectCollisionShape2D" };
+        AddChild(_objectsCollision);
     }
 
     protected void initiateSprite() =>
