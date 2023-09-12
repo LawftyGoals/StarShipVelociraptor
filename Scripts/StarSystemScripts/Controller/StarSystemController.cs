@@ -9,7 +9,12 @@ public partial class StarSystemController : Node
 
     public override void _Ready()
     {
-        PackedScene Scene = GD.Load<PackedScene>("res://Scenes/Environments/StellarObjects.tscn");
+        //PackedScene Scene = GD.Load<PackedScene>("res://Scenes/Environments/StellarObjects.tscn");
+        CentralStar = new StellarObject("star", new Godot.Vector2(0, 0), 1500, 0, 15, 1, true)
+        {
+            ImagePath = "res://images/planets/SunPRototype.png"
+        };
+        AddChild(CentralStar);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -25,13 +25,13 @@ public partial class StellarObject : Area2D
     public float DistanceToParent
     {
         get => _distanceToParent;
-        set { _distanceToParent = value + StellarObjectParent.StellarObjectSize; }
+        set { _distanceToParent = value; }
     }
 
     protected Sprite2D _objectsSprite;
     protected CollisionShape2D _objectsCollision;
 
-    protected string ImagePath { get; set; } = "res://images/planets/resizedfirstplanet.png";
+    public string ImagePath { get; set; } = "res://images/planets/resizedfirstplanet.png";
 
     public StellarObject() { }
 

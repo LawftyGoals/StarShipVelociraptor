@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c13j5et2qsfen"]
+
+[ext_resource type="Script" path="res://Scripts/StarSystemScripts/Controller/StarSystemController.cs" id="1_qlgkg"]
+
+[node name="StarSystemControllerNode" type="Node"]
+script = ExtResource("1_qlgkg")

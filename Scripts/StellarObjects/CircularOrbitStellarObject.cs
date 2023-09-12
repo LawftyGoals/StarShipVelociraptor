@@ -8,15 +8,16 @@ public partial class CircularOrbitStellarObject : StellarObject
     private Godot.Vector2 origin = new Godot.Vector2(0, 0);
 
     public float OrbitSpeed { get; set; } = 10f;
+    public float OrbitDirection { get; set; } = 1f;
 
     public CircularOrbitStellarObject() { }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _objectsSprite = GetNode<Sprite2D>("StellarObjectSprite2D");
-        _objectsCollision = GetNode<CollisionShape2D>("StellarObjectCollisionShape2D");
-
+        //_objectsSprite = GetNode<Sprite2D>("StellarObjectSprite2D");
+        //_objectsCollision = GetNode<CollisionShape2D>("StellarObjectCollisionShape2D");
+        generateSpriteAndCollision();
         initiateSprite();
         initiateCollision();
         setPosition();
@@ -55,8 +56,8 @@ public partial class CircularOrbitStellarObject : StellarObject
         float perpendicularX = distanceSolveForX(step, negativeM);
         float perpendicularY = distanceSolveForY(step, perpendicularX);
 
-        tempPosition.X += positiveOrNegative.X * Math.Abs(perpendicularX) * delta;
-        tempPosition.Y += positiveOrNegative.Y * Math.Abs(perpendicularY) * delta;
+        tempPosition.X += positiveOrNegative.X * Math.Abs(perpendicularX) * delta * OrbitDirection;
+        tempPosition.Y += positiveOrNegative.Y * Math.Abs(perpendicularY) * delta * OrbitDirection;
 
         float afterStepXNoP = tempPosition.X < 0 ? -1 : 1;
         float afterStepYNoP = tempPosition.Y < 0 ? -1 : 1;
