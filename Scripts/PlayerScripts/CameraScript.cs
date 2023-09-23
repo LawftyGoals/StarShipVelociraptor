@@ -11,8 +11,15 @@ public partial class CameraScript : Camera2D
 
     private Godot.Vector2 zoomSkip = new Godot.Vector2(0.1f, 0.1f);
 
+    //private StarShipMovement player;
+    //private CollisionPolygon2D rotatingObject;
+
     // Called when the node enters the scene tree for the first time.
-    public override void _Ready() { }
+    public override void _Ready()
+    {
+        //player = GetParent<StarShipMovement>();
+        //rotatingObject = player.GetChild<CollisionPolygon2D>(0);
+    }
 
     public override void _Input(InputEvent @event)
     {
@@ -62,5 +69,6 @@ public partial class CameraScript : Camera2D
     public override void _Process(double delta)
     {
         smoothZoom(delta);
+        //Rotation = rotatingObject.Rotation;
     }
 }

@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://c13j5et2qsfen"]
+[gd_scene load_steps=3 format=3 uid="uid://c13j5et2qsfen"]
 
 [ext_resource type="Script" path="res://Scripts/StarSystemScripts/Controller/StarSystemController.cs" id="1_qlgkg"]
+[ext_resource type="PackedScene" uid="uid://xtvjjuoa1dxd" path="res://Scenes/Player/playerScene.tscn" id="2_5u4f3"]
 
-[node name="StarSystemControllerNode" type="Node"]
+[node name="Node" type="Node"]
+
+[node name="Node2D" parent="." instance=ExtResource("2_5u4f3")]
+
+[node name="StarSystemControllerNode" type="Node" parent="."]
 script = ExtResource("1_qlgkg")

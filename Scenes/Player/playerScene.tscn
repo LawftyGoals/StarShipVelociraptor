@@ -1,10 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://xtvjjuoa1dxd"]
+[gd_scene load_steps=5 format=3 uid="uid://xtvjjuoa1dxd"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/StarShipMovement.cs" id="1_p8qep"]
 [ext_resource type="Texture2D" uid="uid://74igu178ewhc" path="res://images/background/npr_background.jpg" id="1_u7a1q"]
 [ext_resource type="Texture2D" uid="uid://debhvco5cgxe7" path="res://images/ship/Ship_5.png" id="2_ja5u7"]
-[ext_resource type="PackedScene" uid="uid://dsal44b1euo2d" path="res://Scenes/Environments/StellarObjects/StellarObject.tscn" id="2_ul4yp"]
-[ext_resource type="Script" path="res://Scripts/StellarObjects/CircularOrbitStellarObject.cs" id="3_7fej3"]
 [ext_resource type="Script" path="res://Scripts/PlayerScripts/CameraScript.cs" id="3_ldpon"]
 
 [node name="Node2D" type="Node2D"]
@@ -12,10 +10,10 @@
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_u7a1q")
 
-[node name="StellarObjectArea2D" parent="." instance=ExtResource("2_ul4yp")]
-script = ExtResource("3_7fej3")
-
 [node name="PlayerCharacterBody2D" type="CharacterBody2D" parent="."]
+motion_mode = 1
+floor_stop_on_slope = false
+floor_block_on_wall = false
 script = ExtResource("1_p8qep")
 
 [node name="PlayerCollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerCharacterBody2D"]

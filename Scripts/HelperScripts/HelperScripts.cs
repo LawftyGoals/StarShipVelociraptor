@@ -1,14 +1,8 @@
 using Godot;
-using System;
-using System.Numerics;
+using System.Collections.Generic;
 
-public partial class HelperScripts : Node
+public partial class HelperScripts
 {
-    public override void _Ready()
-    {
-        GD.Print();
-    }
-
     Godot.Vector2 storedVelocity = new Godot.Vector2(0, 0);
 
     public void printVelocityChange(Godot.Vector2 velocity)
@@ -18,5 +12,17 @@ public partial class HelperScripts : Node
             GD.Print(velocity);
             storedVelocity = velocity;
         }
+    }
+
+    public void printDictionaryValues(Dictionary<string, string> valueDictionary)
+    {
+        string finalString = "";
+
+        foreach (KeyValuePair<string, string> kVP in valueDictionary)
+        {
+            finalString += $"{kVP.Key}: {kVP.Value}";
+        }
+
+        GD.Print(finalString);
     }
 }

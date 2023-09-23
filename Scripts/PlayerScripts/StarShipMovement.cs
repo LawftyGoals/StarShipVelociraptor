@@ -8,7 +8,7 @@ public partial class StarShipMovement : CharacterBody2D
     //private HelperScripts velocityPrint = new HelperScripts();
     private float stoppingPoint = 6f;
 
-    public float MaxShipVelocity { get; set; } = 80f;
+    public float MaxShipVelocity { get; set; } = 200f;
 
     [Export]
     public float ShipAcceleration { get; set; } = 100f;
