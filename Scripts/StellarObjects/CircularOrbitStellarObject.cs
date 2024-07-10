@@ -42,6 +42,7 @@ public partial class CircularOrbitStellarObject : StaticStellarObject
 
     public override void _Ready()
     {
+        BodyShapeEntered += printOnCollide;
         generateSpriteAndCollision();
         setPosition();
     }

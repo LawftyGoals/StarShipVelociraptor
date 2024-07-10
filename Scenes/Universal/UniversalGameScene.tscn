@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://h470t0gq46ri"]
+
+[ext_resource type="Script" path="res://Scripts/UniversalComponents/UniversalEffectiveValues.cs" id="1_kakli"]
+[ext_resource type="PackedScene" uid="uid://xtvjjuoa1dxd" path="res://Scenes/Player/playerScene.tscn" id="2_7n0es"]
+[ext_resource type="Texture2D" uid="uid://74igu178ewhc" path="res://images/background/npr_background.jpg" id="3_h10n0"]
+
+[node name="UniversalGameNode" type="Node"]
+script = ExtResource("1_kakli")
+
+[node name="Node" type="Node" parent="."]
+process_mode = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="Node"]
+texture = ExtResource("3_h10n0")
+
+[node name="PlayerShipNode2D" parent="Node" instance=ExtResource("2_7n0es")]

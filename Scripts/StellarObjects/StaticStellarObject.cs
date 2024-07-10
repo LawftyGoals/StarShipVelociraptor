@@ -79,14 +79,19 @@ public partial class StaticStellarObject : Area2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        BodyEntered += printOnCollide;
+        //BodyShapeEntered += printOnCollide;
         generateSpriteAndCollision();
         setPosition();
     }
 
-    private void printOnCollide(Node2D body)
+    protected void printOnCollide(
+        Rid bodyRid,
+        Node2D body,
+        long bodyShapeIndex,
+        long localShapeIndex
+    )
     {
-        GD.Print("Collided");
+        GD.Print(body.Name);
     }
 
     protected void generateSpriteAndCollision()
@@ -101,23 +106,9 @@ public partial class StaticStellarObject : Area2D
         _objectsCollision = new CollisionShape2D
         {
             Name = "StellarObjectCollisionShape2D",
-            Shape = new CircleShape2D() { Radius = objectRadius() }
+            Shape = new CircleShape2D() { Radius = objectRadius() + (int)(objectRadius() * 0.5) }
         };
         AddChild(_objectsCollision);
-
-        if (Landable)
-        {
-            LandingZone = new CollisionShape2D
-            {
-                Name = "StellarObjectLandingCollison2D",
-                Shape = new CircleShape2D()
-                {
-                    Radius = objectRadius() + (int)(objectRadius() * 0.1)
-                }
-            };
-
-            AddChild(LandingZone);
-        }
     }
 
     public void setPosition() => Position = StellarObjectPosition;

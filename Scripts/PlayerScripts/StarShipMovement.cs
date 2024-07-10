@@ -5,6 +5,8 @@ using static HelperScripts;
 
 public partial class StarShipMovement : CharacterBody2D
 {
+    private UniversalEffectiveValues _UniversalGameNode;
+
     //private HelperScripts velocityPrint = new HelperScripts();
     private float stoppingPoint = 6f;
 
@@ -21,6 +23,7 @@ public partial class StarShipMovement : CharacterBody2D
 
     public override void _Ready()
     {
+        _UniversalGameNode = GetNode<UniversalEffectiveValues>("/root/UniversalGameNode");
         _childCollisionPolygon = GetChild<CollisionPolygon2D>(0);
     }
 
